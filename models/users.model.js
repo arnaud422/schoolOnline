@@ -36,3 +36,14 @@ userShema.pre('save', async function(next) {
 })
 
 //fonction static qui permet de verifier le mot de passe avec l' user
+userShema.statics.login = async function(email, password){
+    user = await userShema.findOne({email})
+    if(user){
+        const auth ! = await bcrypt.compare(password, user.password)
+
+        if(auth) return user
+        
+        throw Error('Invalid password')
+    }
+    throw Error('Invalid Email')
+}
