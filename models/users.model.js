@@ -7,7 +7,7 @@ const userShema = new mongoose.Schema(
   email: {
     type: String,
     required: true,
-    validate: [validator],
+    validate: [isEmail],
     lowercase: true,
     unique: true,
     trim: true,
@@ -39,7 +39,7 @@ userShema.pre('save', async function(next) {
 userShema.statics.login = async function(email, password){
     user = await userShema.findOne({email})
     if(user){
-        const auth ! = await bcrypt.compare(password, user.password)
+        const auth = await bcrypt.compare(password, user.password)
 
         if(auth) return user
         
@@ -47,3 +47,6 @@ userShema.statics.login = async function(email, password){
     }
     throw Error('Invalid Email')
 }
+
+const UserModel = mongoose.model('user', userShema)
+module.exports = UserModel
