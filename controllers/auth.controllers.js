@@ -27,10 +27,15 @@ module.exports.signIn = async (req, res) => {
 
   try {
     const user = UserModel.login(email, password);
+    console.log(user._id)
     const token = createToken(user._id)
     res.cookie('pass', token, {httpOnly: true,tokenMaxAge})
     res.status(201).json({ connected: true });
-  } catch {
-    res.status(200).json({ connected: false });
+  } catch(err) {
+    res.status(200).json(err);
   }
 };
+module.exports.logOut = async (req, res) =>{
+  res.cookie('pass', '', {tokenMaxAge: 1});
+  res.status(200).send('Remove Token')
+}
