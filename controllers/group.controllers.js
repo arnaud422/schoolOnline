@@ -36,22 +36,47 @@ module.exports.addMember = async (req, res) => {
     return res.status(400).json({ message: "id Invalid" });
 
   const { idMembre } = req.body;
-  try{
+  try {
     addMembreToGroup = await GroupModel.findByIdAndUpdate(
-        req.params.id,
-        { $addToSet: { membres: idMembre } },
-        { new: true }
-      );
-    
-      addGroupToMembre = await UserModel.findByIdAndUpdate(
-        idMembre,
-        { $addToSet: { group: req.params.id } },
-        { new: true }
-      );
+      req.params.id,
+      { $addToSet: { membres: idMembre } },
+      { new: true }
+    );
 
-      res.status(201).json({addMembreToGroup,addGroupToMembre})
-  }catch{
-      res.status(200).json({message: 'Une erreur est survenue !'})
+    addGroupToMembre = await UserModel.findByIdAndUpdate(
+      idMembre,
+      { $addToSet: { group: req.params.id } },
+      { new: true }
+    );
+
+    res.status(201).json({ addMembreToGroup, addGroupToMembre });
+  } catch {
+    res.status(200).json({ message: "Une erreur est survenue !" });
+  }
+};
+
+module.exports.removeMembre = async (req, res) => {
+  if (!objectID.isValid(req.params.id))
+    return res.status(400).json({ message: "id Invalid" });
+
+  const { idMembre } = req.body;
+  try{
+    removeMembreToGroup = await GroupModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { membres : idMembre }
+      }
+    )
+
+    removeGroupToMembre = await UserModel.findByIdAndUpdate(
+      idMembre,
+      {
+        $pull: { group : req.params.id }
+      }
+    )
+    res.status(201).json({message: removeMembreToGroup})
+  }catch(err){
+    res.status(200).json(err)
   }
   
 };
