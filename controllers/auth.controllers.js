@@ -18,7 +18,7 @@ module.exports.signUp = async (req, res) => {
     const user = await UserModel.create({ email, password });
     res.status(201).json({ user: user._id });
   } catch {
-    res.status(200).json({ message: false });
+    res.status(400).json({ message: false });
   }
 };
 
@@ -26,16 +26,16 @@ module.exports.signIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = UserModel.login(email, password);
+    const user = await UserModel.login(email, password);
     console.log(user._id)
     const token = createToken(user._id)
-    res.cookie('pass', token, {httpOnly: true,tokenMaxAge})
+    res.cookie('pass', token, {maxAge: tokenMaxAge,httpOnly: true})
     res.status(201).json({ connected: true });
   } catch(err) {
-    res.status(200).json(err);
+    res.status(401).json(err);
   }
 };
 module.exports.logOut = async (req, res) =>{
-  res.cookie('pass', '', {tokenMaxAge: 1});
+  res.cookie('pass', '', {maxAge: 1});
   res.status(200).send('Remove Token')
 }

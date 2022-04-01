@@ -5,5 +5,6 @@ const groupControllers = require('../controllers/group.controllers')
 Router.post('/createGroup', groupControllers.createGroup)
 Router.post('/addMember/:id', groupControllers.addMember)
 Router.patch('/removeMembre/:id', groupControllers.removeMembre)
+Router.patch('/createEvent/:id', groupControllers.createEvent)
 
 module.exports = Router
