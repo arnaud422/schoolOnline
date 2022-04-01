@@ -120,3 +120,21 @@ module.exports.removeEvent = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
+//recuperer tous les evenements 
+module.exports.readGroup = (req, res)=>{
+  if(!objectID.isValid(req.params.id))
+    return res.status(404).json({message: "Invalid Id"})
+
+  try{
+    return GroupModel.findById(
+      req.params.id,
+      (err, docs) =>{
+        if(!err) res.status(200).send(docs)
+        else res.status(400).send(err)
+      }
+    )
+  }catch(err){
+    res.status(400).send(err)
+  }
+}
