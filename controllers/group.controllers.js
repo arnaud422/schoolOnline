@@ -77,13 +77,13 @@ module.exports.removeMembre = async (req, res) => {
 module.exports.createEvent = async (req, res) => {
   if (!objectID.isValid(req.params.id))
     return res.status(400).json({ message: "Invalid ID" });
-  const {authorEventId, authorEventPseudo, text, date} = req.body
-  try{
+  const { authorEventId, authorEventPseudo, text, date } = req.body;
+  try {
     const event = await GroupModel.findByIdAndUpdate(
       req.params.id,
       {
-        $push:{
-          evenements:{
+        $push: {
+          evenements: {
             authorEventId,
             authorEventPseudo,
             text,
@@ -91,10 +91,32 @@ module.exports.createEvent = async (req, res) => {
           },
         },
       },
-      {new: true}
-    )
-    res.status(201).json(event)
-  }catch(err){
-    res.status(400).json({message: err})
+      { new: true }
+    );
+    res.status(201).json(event);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
+};
+
+module.exports.removeEvent = async (req, res) => {
+  if (!objectID.isValid(req.params.id))
+    return res.status(400).json({ message: "Invalid Id" });
+
+  const { idEvent } = req.body;
+  try {
+    const removeEvent = await GroupModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          evenements: {
+            _id: idEvent,
+          }
+        },
+      },
+    );
+    res.status(201).json({message: "true"});
+  } catch (err) {
+    res.status(400).json(err);
   }
 };
