@@ -35,6 +35,7 @@ module.exports.signIn = async (req, res) => {
     res.status(401).json(err);
   }
 };
+
 module.exports.logOut = async (req, res) =>{
   res.cookie('pass', '', {maxAge: 1});
   res.status(200).send('Remove Token')
