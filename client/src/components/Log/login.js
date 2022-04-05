@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from ' axios' 
+import axios from 'axios' 
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -17,13 +17,16 @@ const Login = () => {
         axios({
             method: 'post',
             url: 'http://localhost:4000/api/user/login',
-            whithCredentials: true,
+            withCredentials: true,
             data: {
                 email: email,
                 password, password
             }
         })
-        .then(()=>console.log('vous êtes connecté !'))
+        .then((data)=>{
+            console.log(data)
+            window.location.href = '/'   
+        })
         .catch((err)=>console.log(err))
     }
     return (
@@ -37,7 +40,7 @@ const Login = () => {
                 <label htmlFor='password'>Mot de passe:</label><br/>
                 <input type="password" onChange={handleInput} id="password" placeholder="Entrez votre mot de passe"/>
             </div>
-            <input type="submit"/>
+            <input type="submit" onClick={handleSubmit}/>
         </div>
     );
 };

@@ -9,10 +9,10 @@ require('dotenv').config({path : './config/.env'})
 require('./config/dbConnect')
 
 const app = express()
-
-app.use(cookieParser())
+//middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(cookieParser())
 
 app.use(cors({
     origin: `${process.env.API_CONNECT}`,
