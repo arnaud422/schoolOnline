@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from ' axios' 
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -10,6 +11,20 @@ const Login = () => {
         }else if(e.target.id === 'password'){
             setPassword(e.target.value)
         }
+    }
+
+    const handleSubmit = ()=>{
+        axios({
+            method: 'post',
+            url: 'http://localhost:4000/api/user/login',
+            whithCredentials: true,
+            data: {
+                email: email,
+                password, password
+            }
+        })
+        .then(()=>console.log('vous êtes connecté !'))
+        .catch((err)=>console.log(err))
     }
     return (
         <div className='box-login form'>
